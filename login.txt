@@ -1,0 +1,42 @@
+<%-- 
+    Document   : login
+    Created on : 1 Jun, 2023, 3:32:29 PM
+    Author     : welcome
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@ page import="java.sql.*;" %>
+<%
+String user,pass;
+user=request.getParameter("user");
+pass=request.getParameter("pass");
+ if(user==null || pass==null)
+ response.sendRedirect("index.jsp");
+ else
+{
+try
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/darvin1", "root", "");
+Statement st = con.createStatement();
+ResultSet rs =st.executeQuery("select * from users where userid='" + user + "' and pwd='" + pass + "'" );
+                
+if( rs.next() )
+{
+session.setAttribute("username",user);
+               response.sendRedirect ("indexe.jsp");
+               response.sendRedirect ("bookdetails.html"); 
+               }
+               else
+                   {
+                    out.println("<script>alert('check the user and pwd');</script>");
+                    out.println("<script>window.location='index.jsp';</script>");
+                   }
+               
+               con.close();
+                }
+                catch(Exception ee) {}
+}
+             
+%>
